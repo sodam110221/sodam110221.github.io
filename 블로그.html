@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유하쿠 개인 홈페이지</title>
+    <style>
+        @font-face {
+            font-family: 'Nosutaru-dotMPlusH-10-Regular';
+            src: url('Nosutaru-dotMPlusH-10-Regular/Nosutaru-dotMPlusH-10-Regular.ttf') format('truetype');
+        }
+    
+        @font-face {
+            font-family: 'NeoDGM';
+            src: url('neodgm.woff2') format('woff2');
+        }
+    
+        body {
+            font-family: 'Nosutaru-dotMPlusH-10-Regular', sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+    
+        /* 한국어 텍스트에 NeoDGM 폰트 적용 */
+        body:lang(ko) {
+            font-family: 'NeoDGM', sans-serif; /* 한국어 폰트 */
+        }
+    
+        header {
+            background-color: #ffffff;
+            color: #6f6f6f;
+            padding: 20px;
+            text-align: center;
+        }
+    
+        .header-image {
+            width: 500px;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.2s ease-out;
+        }
+    
+        /* 클릭 시 위로 튕겼다 돌아오는 애니메이션 추가 */
+        .header-image.bounce {
+            animation: bounce 0.3s forwards;
+        }
+    
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px); /* 위로 튕기는 애니메이션 */
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+    
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #f2ffc7;
+            padding: 10px;
+        }
+    
+        nav a {
+            color: #000000;
+            padding: 10px 20px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    
+        nav a:hover {
+            background-color: #ffffff;
+        }
+    
+        section {
+            padding: 20px;
+            text-align: center;
+            display: none;
+        }
+    
+        footer {
+            color: rgb(81, 174, 213);
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    
+        .message {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            display: none;
+            font-size: 14px;
+            z-index: 1000;
+        }
+    
+        .memo-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    
+        .memo-box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            width: 80%;
+            background-color: #e6f2ff; /* 하늘색 */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .memo-box:hover {
+            background-color: #cce0ff; /* 하늘색 강조 */
+        }
+    
+        .pencil-icon {
+            cursor: pointer;
+            font-size: 24px;
+            margin: 10px;
+        }
+    
+        .pagination {
+            margin: 20px 0;
+        }
+    
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    
+        /* 이미지 중앙 정렬 스타일 추가 */
+        .image-container {
+            display: grid;            /* Grid 사용 */
+            place-items: center;      /* 가로 및 세로 중앙 정렬 */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="text-align: center;">
+        <img id="headerImage" src="C:/Users/소담%27s/Downloads/일러스트267.jpg" alt="♡" class="header-image" onclick="bounceImage()">
+    </div>
+</header>
+
+<nav>
+    <a onclick="showSection('about')">♡드림소개♡</a>
+    <a onclick="showSection('blog')">Blog</a>
+    <a onclick="showSection('contact')">Contact</a>
+</nav>
+
+<section id="about">
+    <h2>♡드림소개♡</h2>
+    <p>白馬探와 드림유사를하고있어요૮꒰ིྀ˶꜆´˘`꜀˶꒱ིྀა</p>
+    
+    <!-- 이미지 요소 추가 -->
+    <div class="image-container"> <!-- 이미지 컨테이너 추가 -->
+        <img id="introductionImage" src="C:\Users\소담's\Downloads/유하쿠.png" alt="유하쿠 이미지" style="display: none; width: 100%; max-width: 400px;">
+        <p id="nanaText" style="font-size: 12px; margin-top: 5px; display: none;">c.나나곰님</p> <!-- 이름 추가 및 안 보이게 설정 -->
+    </div>
+
+    <p id="introductionText" style="display: none;">⯎드림주프로필⯎<br><br>이름:유[ゆ]<br>나이:13</p>
+    <p id="dDay"></p>
+</section>
+
+<section id="blog">
+    <h2>Blog</h2>
+    <p>유의 일상과 생각들을 기록한 블로그입니다.</p>
+    <div class="memo-container">
+        <span class="pencil-icon" onclick="openMemo()">✏️</span>
+        <div id="memoList"></div>
+    </div>
+    <div class="pagination" id="pagination"></div>
+</section>
+
+<section id="contact">
+    <h2>Contact</h2>
+    <p>문의 사항은 여기로 연락해주세요.</p>
+</section>
+
+<footer>
+    <p>&copy; 死ね❤たってこれが『愛』だから</p>
+</footer>
+
+<div class="message" id="specialMessage"></div>
+
+<script>
+    let memos = []; // 메모를 저장할 배열
+    let currentPage = 1; // 현재 페이지
+    const itemsPerPage = 10; // 페이지당 메모 개수
+
+    function bounceImage() {
+        const img = document.getElementById('headerImage');
+        img.classList.add('bounce');
+        img.addEventListener('animationend', () => {
+            location.reload(); // 페이지 새로고침
+        });
+    }
+
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            section.style.display = 'none';
+        });
+        document.getElementById(sectionId).style.display = 'block';
+        if (sectionId === 'blog') {
+            updateMemoList();
+            updatePagination();
+        }
+    }
+
+    window.onload = () => {
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            section.style.display = 'block';
+        });
+        updateDday();
+    };
+
+    function updateDday() {
+        const startDate = new Date('2024-09-16');
+        const today = new Date();
+        const daysDifference = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+        const dDayElement = document.getElementById('dDay');
+
+        if (daysDifference > 0) {
+            dDayElement.textContent = `好きな白馬くんと♡ ${daysDifference}日 `;
+            checkMilestone(daysDifference); // 특정 경과일 체크
+        } else {
+            dDayElement.textContent = `ディデイまで ${Math.abs(daysDifference)}日 남음`;
+        }
+    }
+
+    function openMemo() {
+        const memo = prompt("새 메모를 입력하세요:");
+        if (memo) {
+            const now = new Date();
+            const memoObject = {
+                content: memo,
+                date: now.toLocaleString() // 날짜와 시간 저장
+            };
+            memos.push(memoObject);
+            updateMemoList();
+            updatePagination();
+        }
+    }
+
+    function updateMemoList() {
+        const memoList = document.getElementById('memoList');
+        memoList.innerHTML = ''; // 기존 메모 목록 초기화
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = Math.min(startIndex + itemsPerPage, memos.length);
+
+        for (let i = startIndex; i < endIndex; i++) {
+            const memoBox = document.createElement('div');
+            memoBox.className = 'memo-box';
+            memoBox.innerHTML = `<span>${memos[i].content.substring(0, 4)}</span> <span>${memos[i].date}</span>`;
+            memoBox.onclick = () => openMemoDetail(memos[i]);
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = '삭제';
+            deleteButton.onclick = (event) => {
+                event.stopPropagation(); // 클릭 이벤트 전파 방지
+                deleteMemo(i);
+            };
+            memoBox.appendChild(deleteButton);
+            memoList.appendChild(memoBox);
+        }
+    }
+
+    function deleteMemo(index) {
+        memos.splice(index, 1); // 메모 삭제
+        updateMemoList();
+        updatePagination();
+    }
+
+    function updatePagination() {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = ''; // 기존 페이지 목록 초기화
+
+        const totalPages = Math.ceil(memos.length / itemsPerPage);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.textContent = i;
+            button.onclick = () => {
+                currentPage = i;
+                updateMemoList();
+            };
+            pagination.appendChild(button);
+        }
+    }
+
+    function openMemoDetail(memo) {
+        alert(`메모 내용: ${memo.content}\n작성일: ${memo.date}`);
+    }
+
+    function checkMilestone(days) {
+        const milestoneMessage = document.getElementById('specialMessage');
+
+        if (days % 100 === 0 && days !== 0) {
+            milestoneMessage.textContent = "白馬くんと" + days + "日になりました！うれしい♥";
+            milestoneMessage.style.display = 'block';
+            setTimeout(() => {
+                milestoneMessage.style.display = 'none';
+            }, 5000);
+        }
+    }
+    function showSection(sectionId) {
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    document.getElementById(sectionId).style.display = 'block';
+    
+    // 드림소개 섹션을 클릭했을 때 추가된 내용 보이기
+if (sectionId === 'about') {
+    document.getElementById('introductionText').style.display = 'block'; // "안녕하세요" 글자를 보이게 함
+    document.getElementById('introductionImage').style.display = 'block'; // 이미지 보이게 함
+    document.getElementById('nanaText').style.display = 'block'; // "c.나나곰님" 글자를 보이게 함
+} else {
+    document.getElementById('introductionText').style.display = 'none'; // 다른 섹션에서는 텍스트 숨기기
+    document.getElementById('introductionImage').style.display = 'none'; // 다른 섹션에서는 이미지 숨기기
+    document.getElementById('nanaText').style.display = 'none'; // 다른 섹션에서는 "c.나나곰님" 숨기기
+}
+
+if (sectionId === 'blog') {
+    updateMemoList();
+    updatePagination();
+}
+}
+</script>
+
+</body>
+</html>
